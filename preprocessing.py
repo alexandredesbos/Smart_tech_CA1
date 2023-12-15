@@ -4,22 +4,39 @@ import cv2
 import tensorflow.keras
 import pickle
 import random
+import keras
+import requests
 
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Flatten
+from keras.optimizers import Adam
+from keras.utils import to_categorical
+from keras.layers import Conv2D, MaxPooling2D
+from PIL import Image
+
+
+
+
+
+#load the data
 def unpickle(file):
     with open(file, 'rb') as fo:
         dict = pickle.load(fo, encoding='bytes')
     return dict
 
+#convert the images to grayscale
 def grayscale(img):
   img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
   return img
 
+#resize the images to 32x32
 def filter_classes(cifar, data_dict, classes_to_keep, label_names):
     """
     Filter the data to keep only the classes in classes_to_keep
     """
     data = data_dict[b'data']
 
+    #reshape the data to the format (num_samples, depth, height, width)
     if cifar == 10:
         labels = np.array(data_dict[b'labels'])
     elif cifar == 100:
@@ -34,6 +51,12 @@ def filter_classes(cifar, data_dict, classes_to_keep, label_names):
     filtered_labels = labels[mask]
     return filtered_data, filtered_labels
 
+#normalize the data to values between 0 and 1
+def normalize_data(data):
+
+    return data.astype('float32') / 255
+
+#plot the images
 def plot_samples(data, labels, label_names):
     for i in range(0, 9):
         plt.subplot(330 + 1 + i)
@@ -43,7 +66,6 @@ def plot_samples(data, labels, label_names):
         plt.imshow(image)
         plt.title(label_names[labels[k]])
     plt.show()
-
 
 
 # Load CIFAR-10 data
@@ -92,6 +114,18 @@ combined_labels = cifar10_classes_to_keep + cifar100_classes_to_keep
 print("Sample of the combined dataset")
 plot_samples(x_train, y_train, combined_all_labels)
 
+#make it similar scale
+x_train = normalize_data(x_train)
+y_train = normalize_data(y_train)
 
+#convert the labels to one-hot encoding
+y_train = to_categorical(y_train)
 
+#print the shapes of the data
+print("x_train shape:", x_train.shape)
+print("y_train shape:", y_train.shape)
 
+#32x32 images with RGB
+print("Image size:", x_train.shape[1:])
+#Number of classes: 10
+print("Number of classes:", y_train.shape[0])

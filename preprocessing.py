@@ -169,3 +169,15 @@ model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accurac
 
 # Train the model for 5 epochs (will do with more epochs later)
 history = model.fit(X_train, y_train, epochs=5, validation_data=(X_val, y_val))
+
+# Evaluate the model on the test data
+test_loss, test_acc = model.evaluate(X_test, y_test)
+print(f'Test accuracy: {test_acc}')
+
+# Plot the training and validation accuracy and loss at each epoch
+plt.plot(history.history['accuracy'], label='accuracy')
+plt.plot(history.history['val_accuracy'], label='val_accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.legend(loc='lower right')
+plt.show()

@@ -147,3 +147,8 @@ X_test = normalize_data(X_train)
 X_train = X_train.reshape(-1, 32, 32, 3)
 X_val = X_val.reshape(-1, 32, 32, 3)
 X_test = X_test.reshape(-1, 32, 32, 3)
+
+#convert the labels to one-hot encoding
+y_train = tf.keras.utils.to_categorical(y_train, num_classes=10)
+y_val = tf.keras.utils.to_categorical(y_val, num_classes=10)
+y_test = tf.keras.utils.to_categorical(y_test, num_classes=10)

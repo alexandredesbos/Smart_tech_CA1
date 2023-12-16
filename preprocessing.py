@@ -137,3 +137,8 @@ test_data = unpickle('cifar-10-batches-py/test_batch')
 X_train, y_train = train_data[b'data'], train_data[b'labels']
 X_val, y_val = validation_data[b'data'], validation_data[b'labels']
 X_test, y_test = test_data[b'data'], test_data[b'labels']
+
+#normalize the data for x_train, x_val and x_test
+X_train = normalize_data(X_train)
+X_val = normalize_data(X_val)
+X_test = normalize_data(X_train) 

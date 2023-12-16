@@ -6,6 +6,7 @@ import pickle
 import random
 import keras
 import requests
+import tensorflow as tf
 
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
@@ -13,10 +14,7 @@ from keras.optimizers import Adam
 from keras.utils import to_categorical
 from keras.layers import Conv2D, MaxPooling2D
 from PIL import Image
-
-
-
-
+from keras import models, layers
 
 #load the data
 def unpickle(file):
@@ -129,3 +127,8 @@ print("y_train shape:", y_train.shape)
 print("Image size:", x_train.shape[1:])
 #Number of classes: 10
 print("Number of classes:", y_train.shape[0])
+
+#here we split the data into training and validation sets by using cifar10 data
+train_data = unpickle('cifar-10-batches-py/data_batch_1') 
+validation_data = unpickle('cifar-10-batches-py/data_batch_2')
+test_data = unpickle('cifar-10-batches-py/test_batch')

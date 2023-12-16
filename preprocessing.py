@@ -132,3 +132,8 @@ print("Number of classes:", y_train.shape[0])
 train_data = unpickle('cifar-10-batches-py/data_batch_1') 
 validation_data = unpickle('cifar-10-batches-py/data_batch_2')
 test_data = unpickle('cifar-10-batches-py/test_batch')
+
+#features for training, validation and testing data
+X_train, y_train = train_data[b'data'], train_data[b'labels']
+X_val, y_val = validation_data[b'data'], validation_data[b'labels']
+X_test, y_test = test_data[b'data'], test_data[b'labels']

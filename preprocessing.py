@@ -142,3 +142,8 @@ X_test, y_test = test_data[b'data'], test_data[b'labels']
 X_train = normalize_data(X_train)
 X_val = normalize_data(X_val)
 X_test = normalize_data(X_train) 
+
+# Reshape the data to (num_samples, depth, height, width)
+X_train = X_train.reshape(-1, 32, 32, 3)
+X_val = X_val.reshape(-1, 32, 32, 3)
+X_test = X_test.reshape(-1, 32, 32, 3)

@@ -164,3 +164,8 @@ model.add(layers.Flatten())
 model.add(layers.Dense(64, activation='relu'))
 model.add(layers.Dense(10, activation='softmax'))
 
+# Compile the model
+model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
+
+# Train the model for 5 epochs (will do with more epochs later)
+history = model.fit(X_train, y_train, epochs=5, validation_data=(X_val, y_val))

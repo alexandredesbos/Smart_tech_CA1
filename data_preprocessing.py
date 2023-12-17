@@ -70,3 +70,48 @@ def filter_class_cifar100(cifar100_x_train, cifar100_y_train, cifar100_x_test, c
     cifar100_y_test_filtered = cifar100_y_test[np.isin(cifar100_y_test, cifar100_classes).flatten()]
     
     return cifar100_x_train_filtered, cifar100_y_train_filtered, cifar100_x_test_filtered, cifar100_y_test_filtered
+
+# Plotting CIFAR10 and CIFAR100 data
+def plot_for_cifar(x_train, y_train, num_of_img):
+
+    fig, axes = plt.subplots(1, num_of_img, figsize=(10, 10))
+
+    for i in range(num_of_img):
+        #get random image from training set
+        index = np.random.randint(0, x_train.shape[0])
+        axes[i].set_title("Class: " + str(y_train[index][0]))
+        axes[i].axis('off')
+        axes[i].imshow(x_train[index])
+    plt.show()
+
+
+# Filter out the plot from CIFAR10 and CIFAR100
+def plot_filtered_for_cifar(x, y, class_labels, num_of_img):
+
+    # Set the seed to get consistent results
+    np.random.seed(0)
+
+    # Get the number of classes
+    num_of_class = len(class_labels)
+
+    # Make a subplot with a grid of size with the number of classes and number of images
+    fig, axes = plt.subplots(num_of_class, num_of_img, figsize=(2 * num_of_img, 2 * num_of_class))
+    
+    # Adjust spacing between subplots
+    plt.tight_layout(pad=3.0, h_pad=1.0, w_pad=0.5)
+    
+    # Loop through each class
+    for i, class_label in enumerate(class_labels):
+        # Get the indices of the current class
+        indices = np.where(y == class_label)[0]
+        # get random image from training set
+        random_indices = np.random.choice(indices, num_of_img, replace=False)
+        
+        # Loop through each image in the current class
+        for j, idx in enumerate(random_indices):
+            # Plot the image
+            axes[i][j].imshow(x[idx])
+            axes[i][j].axis('off')
+            axes[i][j].set_title(f'Class: {class_label}' if j == 0 else '', size='large')
+            
+    plt.show()

@@ -28,3 +28,8 @@ from keras.datasets import cifar10, cifar100
 cifar10_classes = [1, 2, 3, 4, 5, 7, 9]
 cifar100_classes = [2, 8, 11, 13, 19, 34, 35, 41, 46, 47, 48, 52, 56, 58, 59, 65, 80, 89, 90, 96, 98]
 
+# Gray scale filter
+def grayscale_filter(img):
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    
+    return img

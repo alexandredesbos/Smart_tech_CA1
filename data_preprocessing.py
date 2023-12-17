@@ -72,6 +72,30 @@ def filter_class_cifar100(cifar100_x_train, cifar100_y_train, cifar100_x_test, c
     
     return cifar100_x_train_filtered, cifar100_y_train_filtered, cifar100_x_test_filtered, cifar100_y_test_filtered
 
+# Build the model
+def leNet_model():
+  model = Sequential()
+  # Convolutional layer with 60 filters, kernel size (5, 5), and ReLU activation
+  model.add(Conv2D(60, (5, 5), input_shape=(32, 32, 1), activation='relu'))
+  # Max pooling layer with pool size (2, 2)
+  model.add(MaxPooling2D(pool_size=(2, 2)))
+  # Convolutional layer with 30 filters, kernel size (3, 3), and ReLU activation
+  model.add(Conv2D(30, (3, 3), activation='relu'))
+  # Max pooling layer with pool size (2, 2)
+  model.add(MaxPooling2D(pool_size=(2, 2)))
+  # Flatten the output for dense layers
+  model.add(Flatten())
+  # Dense layer with 500 neurons and ReLU activation
+  model.add(Dense(500, activation='relu'))
+  # Dropout layer with a dropout rate of 0.5
+  model.add(Dropout(0.5))
+  # Output layer with 'num_classes' neurons and softmax activation
+  model.add(Dense(num_of_data, activation='softmax'))
+  # Compile the model with Adam optimizer, categorical crossentropy loss, and accuracy metric
+  model.compile(Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
+  return model
+
+
 # Plotting CIFAR10 and CIFAR100 data
 def plot_for_cifar(x_train, y_train, num_of_img):
 
@@ -184,103 +208,6 @@ def preprocess(img):
     
     return img
 
-# # Show random image from CIFAR10 and grayscale it
-# img = random.choice(cifar10_x_train)
-# grayscale_random_img = grayscale_filter(img)
-# plt.imshow(grayscale_random_img)
-# plt.title("Random Image (Grayscale)")
-# plt.axis("off")
-# plt.show()
-
-# # Show the image in shades of gray
-# plt.imshow(grayscale_random_img, cmap='gray')
-# plt.title("Random Image with Colormap (Grayscale)")
-# plt.axis("off")
-# plt.show()
-
-# # Show Plot equalized image
-# img_gray_eq = cv2.equalizeHist(grayscale_random_img)
-# plt.imshow(img_gray_eq)
-# plt.title("Random Image (Equalized)")
-# plt.axis("off")
-# plt.show()
-
-# # Show the image in shades of gray
-# plt.imshow(img_gray_eq, cmap='gray')
-# plt.title("Random Equalized Image (Colormap)")
-# plt.axis("off")
-# plt.show()
-
-# # Show Plot gaussian image
-# img_gaussian = gaussian_filter(img)
-# plt.imshow(img_gaussian)
-# plt.title("Random Image (Gaussian)")
-# plt.axis("off")
-# plt.show()
-
-# # Show Plot preprocessed image
-# img_preprocessed = preprocess(img)
-# plt.imshow(img_preprocessed)
-# plt.title("Random Image (Preprocessed)")
-# plt.axis("off")
-# plt.show()
-
-# # Show the image in shades of gray
-# plt.imshow(img_preprocessed, cmap='gray')
-# plt.title("Random Preprocessed Image (Colormap)")
-# plt.axis("off")
-# plt.show()
-
-def leNet_model():
-    model = Sequential()
-    # Add convolutional layer with 100 filters, 3x3 kernel, relu activation function and input shape of 32x32x3
-    model.add(Conv2D(100, (3, 3), activation='relu', input_shape=(32, 32, 3)))
-    model.add(MaxPooling2D((2, 2)))
-    # Add convolutional layer with 100 filters, 3x3 kernel, relu activation function
-    model.add(Conv2D(70, (3, 3), activation='relu'))
-    model.add(MaxPooling2D((2, 2)))
-    # Add convolutional layer with 100 filters, 3x3 kernel, relu activation function
-    model.add(Conv2D(100, (3, 3), activation='relu'))
-    model.add(Flatten())
-    # Add dense layer with 1000 nodes and relu activation function
-    model.add(Dense(1000, activation='relu'))
-    # Add dense layer with 500 nodes and relu activation function
-    model.add(Dense(10, activation='softmax'))
-    # Compile the model with Adam optimizer, categorical crossentropy loss function and accuracy metric with learning rate of 0.001
-    model.compile(Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
-    return model
-
-print(leNet_model().summary())
-
-# Output of the model
-# Show the summary of the model
-# _________________________________________________________________
-#  Layer (type)                Output Shape              Param #   
-# =================================================================
-#  conv2d (Conv2D)             (None, 30, 30, 100)       2800
-
-#  max_pooling2d (MaxPooling2  (None, 15, 15, 100)       0
-#  D)
-
-#  conv2d_1 (Conv2D)           (None, 13, 13, 70)        63070
-
-#  max_pooling2d_1 (MaxPoolin  (None, 6, 6, 70)          0
-#  g2D)
-
-#  conv2d_2 (Conv2D)           (None, 4, 4, 100)         63100
-
-#  flatten (Flatten)           (None, 1600)              0
-
-#  dense (Dense)               (None, 1000)              1601000
-
-#  dense_1 (Dense)             (None, 10)                10010
-
-# =================================================================
-# Total params: 1739980 (6.64 MB)
-# Trainable params: 1739980 (6.64 MB)
-# Non-trainable params: 0 (0.00 Byte)
-# _________________________________________________________________
-
 def evaluate_model(model, x_test, y_test):
 
     # Evaluate the model and print the test loss and test accuracy
@@ -329,6 +256,85 @@ def display_data_shapes(file_name, x_train, y_train, x_test, y_test):
     print(f"\n{file_name} Training Data: X Shape - {x_train.shape}, Y Shape - {y_train.shape}")
     print(f"{file_name} Testing Data: X Shape - {x_test.shape}, Y Shape - {y_test.shape}")
 
+
+# # Show random image from CIFAR10 and grayscale it
+# img = random.choice(cifar10_x_train)
+# grayscale_random_img = grayscale_filter(img)
+# plt.imshow(grayscale_random_img)
+# plt.title("Random Image (Grayscale)")
+# plt.axis("off")
+# plt.show()
+
+# # Show the image in shades of gray
+# plt.imshow(grayscale_random_img, cmap='gray')
+# plt.title("Random Image with Colormap (Grayscale)")
+# plt.axis("off")
+# plt.show()
+
+# # Show Plot equalized image
+# img_gray_eq = cv2.equalizeHist(grayscale_random_img)
+# plt.imshow(img_gray_eq)
+# plt.title("Random Image (Equalized)")
+# plt.axis("off")
+# plt.show()
+
+# # Show the image in shades of gray
+# plt.imshow(img_gray_eq, cmap='gray')
+# plt.title("Random Equalized Image (Colormap)")
+# plt.axis("off")
+# plt.show()
+
+# # Show Plot gaussian image
+# img_gaussian = gaussian_filter(img)
+# plt.imshow(img_gaussian)
+# plt.title("Random Image (Gaussian)")
+# plt.axis("off")
+# plt.show()
+
+# # Show Plot preprocessed image
+# img_preprocessed = preprocess(img)
+# plt.imshow(img_preprocessed)
+# plt.title("Random Image (Preprocessed)")
+# plt.axis("off")
+# plt.show()
+
+# # Show the image in shades of gray
+# plt.imshow(img_preprocessed, cmap='gray')
+# plt.title("Random Preprocessed Image (Colormap)")
+# plt.axis("off")
+# plt.show()
+
+
+
+
+# Output of the model
+# Show the summary of the model
+# _________________________________________________________________
+#  Layer (type)                Output Shape              Param #   
+# =================================================================
+#  conv2d (Conv2D)             (None, 30, 30, 100)       2800
+
+#  max_pooling2d (MaxPooling2  (None, 15, 15, 100)       0
+#  D)
+
+#  conv2d_1 (Conv2D)           (None, 13, 13, 70)        63070
+
+#  max_pooling2d_1 (MaxPoolin  (None, 6, 6, 70)          0
+#  g2D)
+
+#  conv2d_2 (Conv2D)           (None, 4, 4, 100)         63100
+
+#  flatten (Flatten)           (None, 1600)              0
+
+#  dense (Dense)               (None, 1000)              1601000
+
+#  dense_1 (Dense)             (None, 10)                10010
+
+# =================================================================
+# Total params: 1739980 (6.64 MB)
+# Trainable params: 1739980 (6.64 MB)
+# Non-trainable params: 0 (0.00 Byte)
+# _________________________________________________________________
 
 display_first_image_size("CIFAR-10", cifar10_x_train)
 # Output
@@ -385,7 +391,7 @@ plot_filtered_for_cifar(cifar10_x_train_filtered, cifar10_y_train_filtered, cifa
 # Plot filtered images from CIFAR100 19, 34, 2, 11, 19, 35, 46, 98, 46, 65, 80, 47, 52, 56, 8, 13, 48, 89, 90, 41, 58  = cattle, fox, baby, boy, girl, man, woman, rabbit, squirrel, trees(superclass), bicycle, bus, motorcycle, pickup truck, train, lawn-mower and tractor
 plot_filtered_for_cifar(cifar100_x_train_filtered, cifar100_y_train_filtered, cifar100_classes, 5)
 
-# Combine both datasets
+# Combine CIFAR10 and CIFAR100 data using the combine_cifar function
 x_train, y_train, x_test, y_test = combine_cifar(
     cifar10_x_train_filtered, cifar10_y_train_filtered,
     cifar10_x_test_filtered, cifar10_y_test_filtered,
@@ -393,39 +399,30 @@ x_train, y_train, x_test, y_test = combine_cifar(
     cifar100_x_test_filtered, cifar100_y_test_filtered
 )
 
-# Get the unique classes
+# Get the unique classes in the combined dataset (Data Exploration)
 combined_classes = np.unique(np.concatenate((y_train, y_test)))
 
-# Show the shape of the combined dataset
+# Display the shape of the combined dataset
 print("\nCombined Train Shape:", x_train.shape, y_train.shape)
 print("Combined Test Shape:", x_test.shape, y_test.shape)
 
-# Show the unique combined classes
+# Display the unique combined classes
 print("Combined Classes:", combined_classes)
 
-# Show the 3 images from combined dataset
-combined_cifar = show_combined_cifar(x_train, y_train, combined_classes, 3)
+# Display images from combined dataset
+combined_cifar = show_combined_cifar(x_train, y_train, combined_classes, 5)
 
-# Plot the combined classes
+
+# Plot the combined classes (Data Exploration)
 print("\nClasses:", combined_cifar)
-
-# Set a color
-colors = plt.cm.rainbow(np.linspace(0, 1, len(combined_cifar)))
-
 num_of_data = len(combined_cifar)
-
-# Use a horizontal bar plot for better readability
-plt.figure(figsize=(10, 6))
-bars = plt.barh(range(num_of_data), combined_cifar, color=colors)
+plt.figure(figsize=(12, 4))
+plt.bar(range(num_of_data), combined_cifar)
 plt.title("Distribution of Images Across Combined Classes")
-plt.xlabel("Number of Data")
-plt.ylabel("Classes")
-
-# Add labels with values on top of each bar
-for bar, value in zip(bars, combined_cifar):
-    plt.text(value, bar.get_y() + bar.get_height()/2, str(value), ha='left', va='center', fontsize=8, color='black')
-
+plt.xlabel("Classes")
+plt.ylabel("Number of Data")
 plt.show()
+
 
 # Plot preprocessed image
 x_train_preprocessed = np.array(list(map(preprocess, x_train)))
@@ -433,12 +430,13 @@ x_test_preprocessed = np.array(list(map(preprocess, x_test)))
 
 # Randomly select an image from the training set
 random_index = np.random.choice(len(x_train))
-# Show the preprocessed image
+# Display the preprocessed image
 plt.imshow(x_train[random_index])
 plt.title("Preprocessed Image x_train")
 plt.axis("off")
-plt.show()
 
+
+# Reshape data 
 x_train = reshape(x_train_preprocessed)
 x_test = reshape(x_test_preprocessed)
 
@@ -446,3 +444,22 @@ print("\nX Train shape: ", x_train.shape)
 print("X Test shape: ", x_test.shape)
 
 
+# One hot encoding
+y_train = to_categorical(y_train, num_of_data)
+y_test = to_categorical(y_test, num_of_data)
+
+# Create the LeNet model with the default parameters
+model = leNet_model()
+print(model.summary())
+
+# # Train the model for 10 epochs
+history = model.fit(x_train, y_train, epochs=10, validation_split=0.1, batch_size=400, verbose=1, shuffle=1)
+
+# Evaluate the model on the test set
+evaluate_model(model, x_test, y_test)
+
+# Plot the training accuracy and validation accuracy
+analyze_model(history)
+
+# Plot the training loss and validation loss
+plot_loss(history)

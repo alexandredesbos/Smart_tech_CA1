@@ -314,6 +314,11 @@ def display_first_image_size(file_name, x_train):
     print(f"The size of the first image in {file_name} is:")
     print(x_train[0].shape)
 
+def count_label_per_image(file_name, y_train):
+    label_counts = np.sum(y_train, axis=1)
+    print(f"{file_name} Counts of the label:", label_counts)
+    return label_counts
+
 display_first_image_size("CIFAR-10", cifar10_x_train)
 # Output
 # The size of the first image in CIFAR-10 is:
@@ -323,4 +328,13 @@ display_first_image_size("CIFAR-100", cifar100_x_train)
 # Output
 # The size of the first image in CIFAR-100 is:
 # (32, 32, 3)
+
+
+cifar10_label_counts = count_label_per_image("CIFAR-10", cifar10_y_train)
+# Output
+# CIFAR-10 Counts of the label: [6 9 9 ... 9 1 1]
+
+cifar100_label_counts = count_label_per_image("CIFAR-100", cifar100_y_train)
+# Output
+# CIFAR-100 Counts of the label: [19 29  0 ...  3  7 73]
 

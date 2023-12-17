@@ -184,50 +184,99 @@ def preprocess(img):
     
     return img
 
-# Show random image from CIFAR10 and grayscale it
-img = random.choice(cifar10_x_train)
-grayscale_random_img = grayscale_filter(img)
-plt.imshow(grayscale_random_img)
-plt.title("Random Image (Grayscale)")
-plt.axis("off")
-plt.show()
+# # Show random image from CIFAR10 and grayscale it
+# img = random.choice(cifar10_x_train)
+# grayscale_random_img = grayscale_filter(img)
+# plt.imshow(grayscale_random_img)
+# plt.title("Random Image (Grayscale)")
+# plt.axis("off")
+# plt.show()
 
-# Show the image in shades of gray
-plt.imshow(grayscale_random_img, cmap='gray')
-plt.title("Random Image with Colormap (Grayscale)")
-plt.axis("off")
-plt.show()
+# # Show the image in shades of gray
+# plt.imshow(grayscale_random_img, cmap='gray')
+# plt.title("Random Image with Colormap (Grayscale)")
+# plt.axis("off")
+# plt.show()
 
-# Show Plot equalized image
-img_gray_eq = cv2.equalizeHist(grayscale_random_img)
-plt.imshow(img_gray_eq)
-plt.title("Random Image (Equalized)")
-plt.axis("off")
-plt.show()
+# # Show Plot equalized image
+# img_gray_eq = cv2.equalizeHist(grayscale_random_img)
+# plt.imshow(img_gray_eq)
+# plt.title("Random Image (Equalized)")
+# plt.axis("off")
+# plt.show()
 
-# Show the image in shades of gray
-plt.imshow(img_gray_eq, cmap='gray')
-plt.title("Random Equalized Image (Colormap)")
-plt.axis("off")
-plt.show()
+# # Show the image in shades of gray
+# plt.imshow(img_gray_eq, cmap='gray')
+# plt.title("Random Equalized Image (Colormap)")
+# plt.axis("off")
+# plt.show()
 
-# Show Plot gaussian image
-img_gaussian = gaussian_filter(img)
-plt.imshow(img_gaussian)
-plt.title("Random Image (Gaussian)")
-plt.axis("off")
-plt.show()
+# # Show Plot gaussian image
+# img_gaussian = gaussian_filter(img)
+# plt.imshow(img_gaussian)
+# plt.title("Random Image (Gaussian)")
+# plt.axis("off")
+# plt.show()
 
-# Show Plot preprocessed image
-img_preprocessed = preprocess(img)
-plt.imshow(img_preprocessed)
-plt.title("Random Image (Preprocessed)")
-plt.axis("off")
-plt.show()
+# # Show Plot preprocessed image
+# img_preprocessed = preprocess(img)
+# plt.imshow(img_preprocessed)
+# plt.title("Random Image (Preprocessed)")
+# plt.axis("off")
+# plt.show()
 
-# Show the image in shades of gray
-plt.imshow(img_preprocessed, cmap='gray')
-plt.title("Random Preprocessed Image (Colormap)")
-plt.axis("off")
-plt.show()
+# # Show the image in shades of gray
+# plt.imshow(img_preprocessed, cmap='gray')
+# plt.title("Random Preprocessed Image (Colormap)")
+# plt.axis("off")
+# plt.show()
 
+def leNet_model():
+    model = Sequential()
+    # Add convolutional layer with 100 filters, 3x3 kernel, relu activation function and input shape of 32x32x3
+    model.add(Conv2D(100, (3, 3), activation='relu', input_shape=(32, 32, 3)))
+    model.add(MaxPooling2D((2, 2)))
+    # Add convolutional layer with 100 filters, 3x3 kernel, relu activation function
+    model.add(Conv2D(70, (3, 3), activation='relu'))
+    model.add(MaxPooling2D((2, 2)))
+    # Add convolutional layer with 100 filters, 3x3 kernel, relu activation function
+    model.add(Conv2D(100, (3, 3), activation='relu'))
+    model.add(Flatten())
+    # Add dense layer with 1000 nodes and relu activation function
+    model.add(Dense(1000, activation='relu'))
+    # Add dense layer with 500 nodes and relu activation function
+    model.add(Dense(10, activation='softmax'))
+    # Compile the model with Adam optimizer, categorical crossentropy loss function and accuracy metric with learning rate of 0.001
+    model.compile(Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
+
+print(leNet_model().summary())
+
+# Output of the model
+# Show the summary of the model
+# _________________________________________________________________
+#  Layer (type)                Output Shape              Param #   
+# =================================================================
+#  conv2d (Conv2D)             (None, 30, 30, 100)       2800
+
+#  max_pooling2d (MaxPooling2  (None, 15, 15, 100)       0
+#  D)
+
+#  conv2d_1 (Conv2D)           (None, 13, 13, 70)        63070
+
+#  max_pooling2d_1 (MaxPoolin  (None, 6, 6, 70)          0
+#  g2D)
+
+#  conv2d_2 (Conv2D)           (None, 4, 4, 100)         63100
+
+#  flatten (Flatten)           (None, 1600)              0
+
+#  dense (Dense)               (None, 1000)              1601000
+
+#  dense_1 (Dense)             (None, 10)                10010
+
+# =================================================================
+# Total params: 1739980 (6.64 MB)
+# Trainable params: 1739980 (6.64 MB)
+# Non-trainable params: 0 (0.00 Byte)
+# _________________________________________________________________

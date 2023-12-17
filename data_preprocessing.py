@@ -183,3 +183,51 @@ def preprocess(img):
     img = scale_down_image(img)
     
     return img
+
+# Show random image from CIFAR10 and grayscale it
+img = random.choice(cifar10_x_train)
+grayscale_random_img = grayscale_filter(img)
+plt.imshow(grayscale_random_img)
+plt.title("Random Image (Grayscale)")
+plt.axis("off")
+plt.show()
+
+# Show the image in shades of gray
+plt.imshow(grayscale_random_img, cmap='gray')
+plt.title("Random Image with Colormap (Grayscale)")
+plt.axis("off")
+plt.show()
+
+# Show Plot equalized image
+img_gray_eq = cv2.equalizeHist(grayscale_random_img)
+plt.imshow(img_gray_eq)
+plt.title("Random Image (Equalized)")
+plt.axis("off")
+plt.show()
+
+# Show the image in shades of gray
+plt.imshow(img_gray_eq, cmap='gray')
+plt.title("Random Equalized Image (Colormap)")
+plt.axis("off")
+plt.show()
+
+# Show Plot gaussian image
+img_gaussian = gaussian_filter(img)
+plt.imshow(img_gaussian)
+plt.title("Random Image (Gaussian)")
+plt.axis("off")
+plt.show()
+
+# Show Plot preprocessed image
+img_preprocessed = preprocess(img)
+plt.imshow(img_preprocessed)
+plt.title("Random Image (Preprocessed)")
+plt.axis("off")
+plt.show()
+
+# Show the image in shades of gray
+plt.imshow(img_preprocessed, cmap='gray')
+plt.title("Random Preprocessed Image (Colormap)")
+plt.axis("off")
+plt.show()
+

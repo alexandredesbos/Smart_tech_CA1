@@ -324,6 +324,12 @@ def display_unique_classes(file_name, y_train):
     print(f"{file_name} Unique Classes:", unique_classes)
     return unique_classes
 
+# Display shapes of CIFAR10 training and testing data
+def display_data_shapes(file_name, x_train, y_train, x_test, y_test):
+    print(f"\n{file_name} Training Data: X Shape - {x_train.shape}, Y Shape - {y_train.shape}")
+    print(f"{file_name} Testing Data: X Shape - {x_test.shape}, Y Shape - {y_test.shape}")
+
+
 display_first_image_size("CIFAR-10", cifar10_x_train)
 # Output
 # The size of the first image in CIFAR-10 is:
@@ -355,3 +361,13 @@ cifar100_unique_classes = display_unique_classes("CIFAR-100", cifar100_y_train)
 #                             72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95
 #                             96 97 98 99]
 
+
+display_data_shapes("CIFAR-10", cifar10_x_train, cifar10_y_train, cifar10_x_test, cifar10_y_test)
+# Output
+# CIFAR-10 Training Data: X Shape - (50000, 32, 32, 3), Y Shape - (50000, 1)
+# CIFAR-10 Testing Data: X Shape - (10000, 32, 32, 3), Y Shape - (10000, 1)
+
+display_data_shapes("CIFAR-100", cifar100_x_train, cifar100_y_train, cifar100_x_test, cifar100_y_test)
+# Output
+# CIFAR-100 Training Data: X Shape - (50000, 32, 32, 3), Y Shape - (50000, 1)
+# CIFAR-100 Testing Data: X Shape - (10000, 32, 32, 3), Y Shape - (10000, 1)

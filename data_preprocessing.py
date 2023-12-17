@@ -75,17 +75,17 @@ def filter_class_cifar100(cifar100_x_train, cifar100_y_train, cifar100_x_test, c
 # Build the model
 def leNet_model():
   model = Sequential()
-  # Convolutional layer with 60 filters, kernel size (5, 5), and ReLU activation
+  # Convolutional layer with filters, kernel size (5, 5), and ReLU activation
   model.add(Conv2D(60, (5, 5), input_shape=(32, 32, 1), activation='relu'))
   # Max pooling layer with pool size (2, 2)
   model.add(MaxPooling2D(pool_size=(2, 2)))
-  # Convolutional layer with 30 filters, kernel size (3, 3), and ReLU activation
+  # Convolutional layer with filters, kernel size (3, 3), and ReLU activation
   model.add(Conv2D(30, (3, 3), activation='relu'))
   # Max pooling layer with pool size (2, 2)
   model.add(MaxPooling2D(pool_size=(2, 2)))
   # Flatten the output for dense layers
   model.add(Flatten())
-  # Dense layer with 500 neurons and ReLU activation
+  # Dense layer with neurons and ReLU activation
   model.add(Dense(500, activation='relu'))
   # Dropout layer with a dropout rate of 0.5
   model.add(Dropout(0.5))
@@ -452,7 +452,6 @@ y_test = to_categorical(y_test, num_of_data)
 model = leNet_model()
 print(model.summary())
 
-# # Train the model for 10 epochs
 history = model.fit(x_train, y_train, epochs=10, validation_split=0.1, batch_size=400, verbose=1, shuffle=1)
 
 # Evaluate the model on the test set

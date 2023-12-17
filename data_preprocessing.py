@@ -24,9 +24,9 @@ from keras.datasets import cifar10, cifar100
 
 # filter out classes from CIFAR10 and CIFAR100
 # 1, 2, 3, 4, 5, 7, 9                                                               = automobile, bird, cat, deer, dog, horse, and truck
-# 2, 8, 11, 13, 19, 34, 35, 41, 46, 47, 48, 52, 56, 58, 59, 65, 80, 89, 90, 96, 98  = cattle, fox, baby, boy, girl, man, woman, rabbit, squirrel, trees(superclass), bicycle, bus, motorcycle, pickup truck, train, lawn-mower and tractor
+# 19, 34, 2, 11, 19, 35, 46, 98, 46, 65, 80, 47, 52, 56, 8, 13, 48, 89, 90, 41, 58  = cattle, fox, baby, boy, girl, man, woman, rabbit, squirrel, trees(superclass), bicycle, bus, motorcycle, pickup truck, train, lawn-mower and tractor
 cifar10_classes = [1, 2, 3, 4, 5, 7, 9]
-cifar100_classes = [2, 8, 11, 13, 19, 34, 35, 41, 46, 47, 48, 52, 56, 58, 59, 65, 80, 89, 90, 96, 98]
+cifar100_classes = [19, 34, 2, 11, 19, 35, 46, 98, 46, 65, 80, 47, 52, 56, 8, 13, 48, 89, 90, 41, 58]
 
 # Gray scale filter
 def grayscale_filter(img):
@@ -371,3 +371,17 @@ display_data_shapes("CIFAR-100", cifar100_x_train, cifar100_y_train, cifar100_x_
 # Output
 # CIFAR-100 Training Data: X Shape - (50000, 32, 32, 3), Y Shape - (50000, 1)
 # CIFAR-100 Testing Data: X Shape - (10000, 32, 32, 3), Y Shape - (10000, 1)
+
+# show 10 random images from CIFAR10
+plot_for_cifar(cifar10_x_train, cifar10_y_train, 10)
+# show 10 random images from CIFAR100
+plot_for_cifar(cifar100_x_train, cifar100_y_train, 10)
+
+cifar10_x_train_filtered, cifar10_y_train_filtered, cifar10_x_test_filtered, cifar10_y_test_filtered = filter_class_cifar10(cifar10_x_train, cifar10_y_train, cifar10_x_test, cifar10_y_test)
+cifar100_x_train_filtered, cifar100_y_train_filtered, cifar100_x_test_filtered, cifar100_y_test_filtered = filter_class_cifar100(cifar100_x_train, cifar100_y_train, cifar100_x_test, cifar100_y_test)
+
+# Plot filtered images from CIFAR10 (1.automobile, 2.bird, 3.cat, 4.deer, 5.dog, 7.horse, and 9.truck)
+plot_filtered_for_cifar(cifar10_x_train_filtered, cifar10_y_train_filtered, cifar10_classes, 5)
+# Plot filtered images from CIFAR100 19, 34, 2, 11, 19, 35, 46, 98, 46, 65, 80, 47, 52, 56, 8, 13, 48, 89, 90, 41, 58  = cattle, fox, baby, boy, girl, man, woman, rabbit, squirrel, trees(superclass), bicycle, bus, motorcycle, pickup truck, train, lawn-mower and tractor
+plot_filtered_for_cifar(cifar100_x_train_filtered, cifar100_y_train_filtered, cifar100_classes, 5)
+

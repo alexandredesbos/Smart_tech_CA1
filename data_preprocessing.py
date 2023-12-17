@@ -33,3 +33,9 @@ def grayscale_filter(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     
     return img
+
+# Gaussian filter with size 3x3 and sigma 0
+def gaussian_filter(img):
+    img = cv2.GaussianBlur(img, (3, 3), 0)
+    
+    return img

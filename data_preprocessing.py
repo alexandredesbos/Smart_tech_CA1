@@ -44,3 +44,8 @@ def gaussian_filter(img):
 def scale_down_image(img):
 
     return img / 255
+
+# Reshape the image to 32x32x1 for RGB 
+def reshape(images):
+    
+    return images.reshape(images.shape[0], 32, 32, 1)

@@ -280,3 +280,47 @@ print(leNet_model().summary())
 # Trainable params: 1739980 (6.64 MB)
 # Non-trainable params: 0 (0.00 Byte)
 # _________________________________________________________________
+
+def evaluate_model(model, x_test, y_test):
+
+    # Evaluate the model and print the test loss and test accuracy
+    score = model.evaluate(x_test, y_test, verbose=0)
+    print("Model Score:", score[0])
+    print("Model Accuracy:", score[1])
+
+def analyze_model(history):
+
+    # Plot the training accuracy and validation accuracy
+    plt.plot(history.history['accuracy'])
+    plt.plot(history.history['val_accuracy'])
+    plt.title('Model Accuracy')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    # Set the legend of the plot to the upper left corner
+    plt.legend(['Train', 'Validation'], loc='upper left')
+    plt.show()
+
+def plot_loss(history):
+
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title('Model Loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.legend(['Train', 'Validation'], loc='upper left')
+    plt.show()
+
+def display_first_image_size(file_name, x_train):
+    print(f"The size of the first image in {file_name} is:")
+    print(x_train[0].shape)
+
+display_first_image_size("CIFAR-10", cifar10_x_train)
+# Output
+# The size of the first image in CIFAR-10 is:
+# (32, 32, 3)
+
+display_first_image_size("CIFAR-100", cifar100_x_train)
+# Output
+# The size of the first image in CIFAR-100 is:
+# (32, 32, 3)
+

@@ -50,6 +50,7 @@ def reshape(img):
 
     return img.reshape(img.shape[0], 32, 32, 1)
 
+
 # Filter CIFAR10 and CIFA100 data with the classes we want
 def filter_class_cifar10(cifar10_x_train, cifar10_y_train, cifar10_x_test, cifar10_y_test):
 
@@ -166,3 +167,19 @@ def show_combined_cifar(x, y, class_labels, num_of_img):
 
     # Return the number of data points in each class
     return num_of_data
+
+
+# preprocess the data
+def preprocess(img):
+
+    img = grayscale_filter(img)
+
+    # Apply equalization filter
+    img = cv2.equalizeHist(img)
+
+    img = gaussian_filter(img)
+    
+    # Scale down the image to 0-1 range to improve the performance of the model
+    img = scale_down_image(img)
+    
+    return img

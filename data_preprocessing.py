@@ -39,3 +39,8 @@ def gaussian_filter(img):
     img = cv2.GaussianBlur(img, (3, 3), 0)
     
     return img
+
+# Scale down image
+def scale_down_image(img):
+
+    return img / 255

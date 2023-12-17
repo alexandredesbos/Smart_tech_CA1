@@ -405,3 +405,44 @@ print("Combined Classes:", combined_classes)
 
 # Show the 3 images from combined dataset
 combined_cifar = show_combined_cifar(x_train, y_train, combined_classes, 3)
+
+# Plot the combined classes
+print("\nClasses:", combined_cifar)
+
+# Set a color
+colors = plt.cm.rainbow(np.linspace(0, 1, len(combined_cifar)))
+
+num_of_data = len(combined_cifar)
+
+# Use a horizontal bar plot for better readability
+plt.figure(figsize=(10, 6))
+bars = plt.barh(range(num_of_data), combined_cifar, color=colors)
+plt.title("Distribution of Images Across Combined Classes")
+plt.xlabel("Number of Data")
+plt.ylabel("Classes")
+
+# Add labels with values on top of each bar
+for bar, value in zip(bars, combined_cifar):
+    plt.text(value, bar.get_y() + bar.get_height()/2, str(value), ha='left', va='center', fontsize=8, color='black')
+
+plt.show()
+
+# Plot preprocessed image
+x_train_preprocessed = np.array(list(map(preprocess, x_train)))
+x_test_preprocessed = np.array(list(map(preprocess, x_test)))
+
+# Randomly select an image from the training set
+random_index = np.random.choice(len(x_train))
+# Show the preprocessed image
+plt.imshow(x_train[random_index])
+plt.title("Preprocessed Image x_train")
+plt.axis("off")
+plt.show()
+
+x_train = reshape(x_train_preprocessed)
+x_test = reshape(x_test_preprocessed)
+
+print("\nX Train shape: ", x_train.shape)
+print("X Test shape: ", x_test.shape)
+
+

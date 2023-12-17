@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
+from sklearn.model_selection import train_test_split
 import tensorflow.keras
 import pickle
 import random
@@ -16,16 +17,12 @@ from keras.layers import Conv2D, MaxPooling2D
 from PIL import Image
 from keras import models, layers
 
-#load the data
+#### Load the data and combine the two datasets ####
+
 def unpickle(file):
     with open(file, 'rb') as fo:
         dict = pickle.load(fo, encoding='bytes')
     return dict
-
-#convert the images to grayscale
-def grayscale(img):
-  img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-  return img
 
 #resize the images to 32x32
 def filter_classes(cifar, data_dict, classes_to_keep, label_names):
@@ -49,11 +46,6 @@ def filter_classes(cifar, data_dict, classes_to_keep, label_names):
     filtered_labels = labels[mask]
     return filtered_data, filtered_labels
 
-#normalize the data to values between 0 and 1
-def normalize_data(data):
-
-    return data.astype('float32') / 255
-
 #plot the images
 def plot_samples(data, labels, label_names):
     for i in range(0, 9):
@@ -72,15 +64,15 @@ cifar_10_labels = [ "airplane", "automobile", "bird", "cat", "deer", "dog", "fro
 
 cifar10_classes_to_keep = ['automobile', 'bird', 'cat', 'deer', 'dog', 'horse', 'ship', 'truck']
 
-x_train_cifar_10, y_train_cifar_10 = filter_classes(10, cifar_10, cifar10_classes_to_keep, cifar_10_labels)
+X_train_cifar_10, y_train_cifar_10 = filter_classes(10, cifar_10, cifar10_classes_to_keep, cifar_10_labels)
 
-print(x_train_cifar_10.shape)
+print(X_train_cifar_10.shape)
 
 print(y_train_cifar_10.shape)
 
 
 print("sample of the CIFAR-10 dataset")
-plot_samples(x_train_cifar_10, y_train_cifar_10, cifar_10_labels)
+plot_samples(X_train_cifar_10, y_train_cifar_10, cifar_10_labels)
 
 
 # Load CIFAR-100 data
@@ -92,16 +84,17 @@ cifar_100_labels = [ "apple", "aquarium_fish", "baby", "bear", "beaver", "bed", 
 # Classes to keep
 cifar100_classes_to_keep = ["cattle", "fox", "baby", "boy", "girl", "man", "woman", "rabbit", "squirrel", "maple_tree", "oak_tree", "palm_tree", "pine_tree", "willow_tree", "bicycle", "bus", "motorcycle", "pickup_truck", "train", "lawn_mower", "tractor"]
 
-x_train_cifar_100, y_train_cifar_100 = filter_classes(100, cifar_100, cifar100_classes_to_keep, cifar_100_labels)
+X_train_cifar_100, y_train_cifar_100 = filter_classes(100, cifar_100, cifar100_classes_to_keep, cifar_100_labels)
 
 print("sample of the CIFAR-100 dataset")
-plot_samples(x_train_cifar_100, y_train_cifar_100, cifar_100_labels)
+plot_samples(X_train_cifar_100, y_train_cifar_100, cifar_100_labels)
+
 
 # add 10 to the labels to avoid confusion with the labels from CIFAR-10
 y_train_cifar_100 = y_train_cifar_100 + 10
 
 # Combining the two datasets
-x_train = np.concatenate((x_train_cifar_10, x_train_cifar_100))
+X_train = np.concatenate((X_train_cifar_10, X_train_cifar_100))
 y_train = np.concatenate((y_train_cifar_10, y_train_cifar_100))
 
 print(y_train[random.randint(0, y_train.shape[0])])
@@ -110,33 +103,44 @@ combined_all_labels = cifar_10_labels + cifar_100_labels
 combined_labels = cifar10_classes_to_keep + cifar100_classes_to_keep
 
 print("Sample of the combined dataset")
-plot_samples(x_train, y_train, combined_all_labels)
+plot_samples(X_train, y_train, combined_all_labels)
+
+
+#### Preprocess the data ####
+
+def grayscale(img):
+  img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+  return img
+
+#normalize the data to values between 0 and 1
+def normalize_data(data):
+    return data.astype('float32') / 255
+
 
 #make it similar scale
-x_train = normalize_data(x_train)
+X_train = normalize_data(X_train)
 y_train = normalize_data(y_train)
 
 #convert the labels to one-hot encoding
 y_train = to_categorical(y_train)
 
 #print the shapes of the data
-print("x_train shape:", x_train.shape)
+print("X_train shape:", X_train.shape)
 print("y_train shape:", y_train.shape)
 
 #32x32 images with RGB
-print("Image size:", x_train.shape[1:])
+print("Image size:", X_train.shape[1:])
 #Number of classes: 10
 print("Number of classes:", y_train.shape[0])
 
-#here we split the data into training and validation sets by using cifar10 data
-train_data = unpickle('cifar-10-batches-py/data_batch_1') 
-validation_data = unpickle('cifar-10-batches-py/data_batch_2')
-test_data = unpickle('cifar-10-batches-py/test_batch')
 
-#features for training, validation and testing data
-X_train, y_train = train_data[b'data'], train_data[b'labels']
-X_val, y_val = validation_data[b'data'], validation_data[b'labels']
-X_test, y_test = test_data[b'data'], test_data[b'labels']
+#### Build the model ####
+
+
+# Split the data into training, validation and test sets -> 60% training, 20% validation, 20% test
+X_train, X_test, y_train, y_test = train_test_split(X_train, y_train, test_size=0.2, random_state=42)
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, random_state=42)
+
 
 #normalize the data for x_train, x_val and x_test
 X_train = normalize_data(X_train)

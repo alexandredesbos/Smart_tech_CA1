@@ -113,5 +113,56 @@ def plot_filtered_for_cifar(x, y, class_labels, num_of_img):
             axes[i][j].imshow(x[idx])
             axes[i][j].axis('off')
             axes[i][j].set_title(f'Class: {class_label}' if j == 0 else '', size='large')
-            
+
     plt.show()
+
+# Combine the two CIFAR-10 and CIFAR100 data
+def combine_cifar(cifar10_x_train, cifar10_y_train, cifar10_x_test, cifar10_y_test, cifar100_x_train, cifar100_y_train, cifar100_x_test, cifar100_y_test):
+    
+    x_train = np.concatenate((cifar10_x_train, cifar100_x_train), axis=0)
+    y_train = np.concatenate((cifar10_y_train, cifar100_y_train), axis=0)
+    x_test = np.concatenate((cifar10_x_test, cifar100_x_test), axis=0)
+    y_test = np.concatenate((cifar10_y_test, cifar100_y_test), axis=0)
+    
+    return x_train, y_train, x_test, y_test
+
+# Show the combined CIFAR10 and CIFAR100 data
+def show_combined_cifar(x, y, class_labels, num_of_img):
+
+    num_of_class = len(class_labels)
+    num_of_data = []
+
+    # Make a subplot with a grid of size with the number of classes and number of images
+    fig, axes = plt.subplots(num_of_class, num_of_img, figsize=(2 * num_of_img, 2 * num_of_class))
+    plt.tight_layout(pad=3.0, h_pad=1.0, w_pad=0.5)
+
+    # Check if there is only one class
+    if num_of_class == 1:
+
+        # If there is only one class then add an extra dimension to the axes
+        axes = np.array([axes])
+
+    # Loop
+    for j, class_label in enumerate(class_labels):
+
+        # Find indices where the label matches the current class
+        indices = np.where(y.flatten() == class_label)[0]
+
+        # Select random indices from the indices array with the number of images 
+        selected_indices = np.random.choice(indices, num_of_img, replace=False)
+
+        # Loop
+        for k, index in enumerate(selected_indices):
+            # Display the image on the subplot at the current row and column index 
+            axes[j, k].imshow(x[index], interpolation='nearest')
+            axes[j, k].axis('off')
+            num_of_data.append(len(indices))
+
+        # Set the title of the subplot to the current class
+        axes[j, -1].set_title(f'Class: {class_label}', size='large')
+
+    # show the plot
+    plt.show()
+
+    # Return the number of data points in each class
+    return num_of_data

@@ -159,8 +159,8 @@ def show_combined_cifar(x, y, class_labels, num_of_img):
             axes[j, k].axis('off')
             num_of_data.append(len(indices))
 
-        # Set the title of the subplot to the current class
-        axes[j, -1].set_title(f'Class: {class_label}', size='large')
+        # Set the title of the subplot to the current class at middle of the row
+        axes[j, 1].set_title(f'Class: {class_label}', size='small')
 
     # show the plot
     plt.show()
@@ -385,3 +385,23 @@ plot_filtered_for_cifar(cifar10_x_train_filtered, cifar10_y_train_filtered, cifa
 # Plot filtered images from CIFAR100 19, 34, 2, 11, 19, 35, 46, 98, 46, 65, 80, 47, 52, 56, 8, 13, 48, 89, 90, 41, 58  = cattle, fox, baby, boy, girl, man, woman, rabbit, squirrel, trees(superclass), bicycle, bus, motorcycle, pickup truck, train, lawn-mower and tractor
 plot_filtered_for_cifar(cifar100_x_train_filtered, cifar100_y_train_filtered, cifar100_classes, 5)
 
+# Combine both datasets
+x_train, y_train, x_test, y_test = combine_cifar(
+    cifar10_x_train_filtered, cifar10_y_train_filtered,
+    cifar10_x_test_filtered, cifar10_y_test_filtered,
+    cifar100_x_train_filtered, cifar100_y_train_filtered,
+    cifar100_x_test_filtered, cifar100_y_test_filtered
+)
+
+# Get the unique classes
+combined_classes = np.unique(np.concatenate((y_train, y_test)))
+
+# Show the shape of the combined dataset
+print("\nCombined Train Shape:", x_train.shape, y_train.shape)
+print("Combined Test Shape:", x_test.shape, y_test.shape)
+
+# Show the unique combined classes
+print("Combined Classes:", combined_classes)
+
+# Show the 3 images from combined dataset
+combined_cifar = show_combined_cifar(x_train, y_train, combined_classes, 3)
